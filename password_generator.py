@@ -24,12 +24,16 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         
-        self.setFixedSize(QSize(480, 320))
+        self.setFixedSize(QSize(480, 280))
         self.setWindowTitle('Password generator')
         
         
         primary_font = QFont('sans-serif', 12, 700)
         secondary_font = QFont('sans-serif', 10, 500)
+        
+        top_left_alignment = (Qt.AlignmentFlag.AlignTop
+                              | Qt.AlignmentFlag.AlignLeft)
+        
         
         self.password_field = QLineEdit(self)
         self.password_field.setPlaceholderText('the generated password '
@@ -81,8 +85,7 @@ class MainWindow(QMainWindow):
         characters_layout = QVBoxLayout()
         characters_layout.addWidget(self.characters_label)
         characters_layout.addLayout(characters_grid)
-        characters_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter
-                                       | Qt.AlignmentFlag.AlignLeft)
+        characters_layout.setAlignment(top_left_alignment)
         
         
         self.exclude_label = QLabel()
@@ -95,12 +98,12 @@ class MainWindow(QMainWindow):
         exclude_layout = QVBoxLayout()
         exclude_layout.addWidget(self.exclude_label)
         exclude_layout.addWidget(self.exclude_characters)
-        exclude_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        exclude_layout.setAlignment(top_left_alignment)
         
         
         self.password_lenght = QSlider()
         self.password_lenght.setMinimum(8)
-        self.password_lenght.setMaximum(32)
+        self.password_lenght.setMaximum(24)
         self.password_lenght.setValue(12)
         self.password_lenght.setOrientation(Qt.Orientation.Horizontal)
         self.password_lenght.valueChanged.connect(
@@ -116,7 +119,7 @@ class MainWindow(QMainWindow):
         password_lenght_layout = QVBoxLayout()
         password_lenght_layout.addWidget(self.password_lenght_label)
         password_lenght_layout.addWidget(self.password_lenght)
-        password_lenght_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        password_lenght_layout.setAlignment(top_left_alignment)
         
         
         self.button = QPushButton()
@@ -137,25 +140,28 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(container)
     
     def generate_password(self):
-        syms = ''
+        all_symbols = ''
         
         if self.lowercase.isChecked():
-            syms += self.lowercase.text()
+            all_symbols += self.lowercase.text()
         if self.uppercase.isChecked():
-            syms += self.uppercase.text()
+            all_symbols += self.uppercase.text()
         if self.digits.isChecked():
-            syms += self.digits.text()
+            all_symbols += self.digits.text()
         if self.punctuation.isChecked():
-            syms += self.punctuation.text()
+            all_symbols += self.punctuation.text()
         
         symbols = ''
-        for ch in syms:
+        for ch in all_symbols:
             if ch not in self.exclude_characters.text():
                 symbols += ch
         
         password = ''
         while len(password) < self.password_lenght.value():
-            password += random.choice(symbols)
+            password_symbol = random.choice(symbols)
+            
+            if password.lower().count(password_symbol.lower()) < 2:
+                password += password_symbol
         
         self.password_field.setText(password)
     
@@ -173,7 +179,7 @@ class MainWindow(QMainWindow):
     def password_field_text_changed(self):
         text = self.password_field.text()
         
-        if [x for x in text if x.replace(' ', '')]:
+        if list(filter(lambda x: x != ' ', text)):
             self.password_field_copy.setEnabled(True)
         else:
             self.password_field_copy.setEnabled(False)
@@ -196,7 +202,7 @@ def application():
     window = MainWindow()
     window.show()
     
-    app.exec()
+    sys.exit(app.exec())
 
 if __name__ == '__main__':
     application()
