@@ -16,7 +16,6 @@ from PyQt6.QtWidgets import (
     QListWidget,
     QVBoxLayout,
     QHBoxLayout,
-    QGridLayout,
     QProgressBar,
     QPushButton,
     QWidget,
@@ -32,10 +31,11 @@ class Separator(QFrame):
         ):
         super().__init__()
         
-        if orientation.lower() == 'h':
-            self.setFrameShape(QFrame.Shape.HLine)
-        elif orientation.lower() == 'v':
-            self.setFrameShape(QFrame.Shape.VLine)
+        match orientation.lower():
+            case 'h':
+                self.setFrameShape(QFrame.Shape.HLine)
+            case 'v':
+                self.setFrameShape(QFrame.Shape.VLine)
         
         self.setLineWidth(line_width)
         self.setStyleSheet('color: lightgray;')
@@ -50,12 +50,11 @@ class MainWindow(QMainWindow):
         self.font_primary = QFont('sans-serif', 12)
         self.font_primary_bold = QFont('sans-serif', 12, 600)
         self.font_secondary = QFont('sans-serif', 10)
-        self.setFont(self.font_secondary)
         
+        self.setFont(self.font_secondary)
         
         top_left_align = (Qt.AlignmentFlag.AlignTop
                           | Qt.AlignmentFlag.AlignLeft)
-        
         
         self.right_answers = 0
         self.wrong_answers = 0
@@ -162,7 +161,7 @@ class MainWindow(QMainWindow):
         
         self.countdown_combobox = QComboBox()
         self.countdown_combobox.addItems(
-            [str(s)+f's' for s in self.countdown_time_list]
+            [f'{s}s' for s in self.countdown_time_list]
         )
         self.countdown_combobox.setCurrentIndex(1)
         self.countdown_combobox.setEnabled(False)
@@ -186,16 +185,16 @@ class MainWindow(QMainWindow):
         self.addition = QCheckBox()
         self.addition.setText('Addition')
         self.addition.setChecked(True)
-        self.addition.stateChanged.connect(self.operators_state_changed)
+        self.addition.stateChanged.connect(self.operators_list_changed)
         
         self.subtraction = QCheckBox()
         self.subtraction.setText('Subtraction')
         self.subtraction.setChecked(True)
-        self.subtraction.stateChanged.connect(self.operators_state_changed)
+        self.subtraction.stateChanged.connect(self.operators_list_changed)
         
         self.multiplication = QCheckBox()
         self.multiplication.setText('Multiplication')
-        self.multiplication.stateChanged.connect(self.operators_state_changed)
+        self.multiplication.stateChanged.connect(self.operators_list_changed)
         
         self.division = QCheckBox()
         self.division.setText('Division')
@@ -261,13 +260,13 @@ class MainWindow(QMainWindow):
         operators_layout.addLayout(multiplication_layout)
         operators_layout.addLayout(division_layout)
         
-        self.operators = {
+        self.operators_dict = {
             '+': True,
             '-': True,
             '*': False,
             # '/': False,
         }
-        self.operators_list = [k for k, v in self.operators.items() if v]
+        self.operators_list = [k for k, v in self.operators_dict.items() if v]
         
         
         self.generated_numbers_label = QLabel()
@@ -283,8 +282,7 @@ class MainWindow(QMainWindow):
         settings_layout.addWidget(self.negative_numbers)
         settings_layout.addWidget(Separator('h'))
         settings_layout.addLayout(operators_layout)
-        settings_layout.setAlignment(Qt.AlignmentFlag.AlignTop
-                                     | Qt.AlignmentFlag.AlignLeft)
+        settings_layout.setAlignment(top_left_align)
         
         
         self.timer_label = QLabel()
@@ -315,7 +313,6 @@ class MainWindow(QMainWindow):
         
         self.countdown = QProgressBar()
         self.countdown.setTextVisible(False)
-        # self.countdown.setValue(75)
         
         self.countdown_label = QLabel()
         self.countdown_label.setFont(self.font_primary_bold)
@@ -325,31 +322,26 @@ class MainWindow(QMainWindow):
         
         self.countdown_layout = QVBoxLayout()
         self.countdown_layout.addWidget(self.countdown)
-        # self.countdown_layout.addSpacing(-28)
         self.countdown_layout.addWidget(self.countdown_label)
-        # self.countdown_layout.insertSpacing(1, 28)
         
         
         self.example_label = QLabel()
-        self.example_label.setText('example')
+        self.example_label.setText('Example')
         self.example_label.setFont(self.font_primary)
         
         self.equal_label = QLabel(text=' = ')
         self.equal_label.setFont(self.font_primary)
         
         self.user_input = QLineEdit()
-        self.user_input.setPlaceholderText('result')
+        self.user_input.setEnabled(False)
+        self.user_input.setPlaceholderText('Result')
         self.user_input.setFont(self.font_primary)
         self.user_input.setMaxLength(10)
         self.user_input.returnPressed.connect(self.check_example)
         
         example_layout = QHBoxLayout()
-        example_layout.addWidget(
-            self.example_label,
-        )
-        example_layout.addWidget(
-            self.equal_label,
-        )
+        example_layout.addWidget(self.example_label)
+        example_layout.addWidget(self.equal_label)
         example_layout.addWidget(
             self.user_input,
             alignment=Qt.AlignmentFlag.AlignHCenter
@@ -408,7 +400,7 @@ class MainWindow(QMainWindow):
     
     def logging_state_changed(self):
         self.logging: bool = self.logging_checkbox.isChecked()
-        print(f'{self.logging = }')
+        print(f'Logging: {self.logging}')
     
     def update_current_gen_nums_dict(self):
         self.current_gen_nums_dict = {
@@ -428,26 +420,20 @@ class MainWindow(QMainWindow):
         )
     
     def difficulty_state_changed(self, difficulty: str):
-        if difficulty == 'Easy':
-            self.diff = difficulty.lower()
-            
-            self.countdown_checkbox.setChecked(False)
-            self.countdown_checkbox.setEnabled(False)
-            self.countdown_checkbox.setText('Countdown (Hard)')
+        match difficulty:
+            case 'Easy':
+                self.countdown_checkbox.setChecked(False)
+                self.countdown_checkbox.setEnabled(False)
+                self.countdown_checkbox.setText('Countdown (Hard)')
+            case 'Normal':
+                self.countdown_checkbox.setChecked(False)
+                self.countdown_checkbox.setEnabled(False)
+                self.countdown_checkbox.setText('Countdown (Hard)')
+            case 'Hard':
+                self.countdown_checkbox.setEnabled(True)
+                self.countdown_checkbox.setText('Countdown')
         
-        elif difficulty == 'Normal':
-            self.diff = difficulty.lower()
-            
-            self.countdown_checkbox.setChecked(False)
-            self.countdown_checkbox.setEnabled(False)
-            self.countdown_checkbox.setText('Countdown (Hard)')
-        
-        elif difficulty == 'Hard':
-            self.diff = difficulty.lower()
-            
-            self.countdown_checkbox.setEnabled(True)
-            self.countdown_checkbox.setText('Countdown')
-        
+        self.diff = difficulty.lower()
         self.update_current_gen_nums_dict()
         
         if self.logging:
@@ -456,7 +442,6 @@ class MainWindow(QMainWindow):
     def countdown_state_changed(self, state: int):
         if state:
             self.countdown_combobox.setEnabled(True)
-            
             self.countdown_label.setVisible(True)
             self.countdown_layout.insertSpacing(1, -28)
             
@@ -464,14 +449,13 @@ class MainWindow(QMainWindow):
                 print('Countdown: Enabled')
         else:
             self.countdown_combobox.setEnabled(False)
-            
             self.countdown_label.setVisible(False)
             self.countdown_layout.insertSpacing(1, 28)
             
             if self.logging:
                 print('Countdown: Disabled')
     
-    def countdown_time_changed(self, index):
+    def countdown_time_changed(self, index: int):
         if self.logging:
             print(f'Countdown time: {self.countdown_time_list[index]}s')
     
@@ -489,43 +473,34 @@ class MainWindow(QMainWindow):
         
         self.update_current_gen_nums_dict()
     
-    def operators_state_changed(self):
-        addition_state: bool = self.addition.isChecked()
-        subtraction_state: bool = self.subtraction.isChecked()
-        multiplication_state: bool = self.multiplication.isChecked()
+    def operators_list_changed(self):
+        ops_matrix = [
+            ('+',
+             self.addition.isChecked(),
+             self.addition_numbers_label),
+            ('-',
+             self.subtraction.isChecked(),
+             self.subtraction_numbers_label),
+            ('*',
+             self.multiplication.isChecked(),
+             self.multiplication_numbers_label),
+        ]
         
-        if addition_state:
-            self.addition_numbers_label.setStyleSheet('color: black;')
-            self.operators['+'] = True
-        else:
-            self.addition_numbers_label.setStyleSheet('color: gray;')
-            self.operators['+'] = False
+        for op, state, label in ops_matrix:
+            if state:
+                label.setStyleSheet('color: black;')
+                self.operators_dict[op] = True
+            else:
+                label.setStyleSheet('color: gray;')
+                self.operators_dict[op] = False
         
-        if subtraction_state:
-            self.subtraction_numbers_label.setStyleSheet('color: black;')
-            self.operators['-'] = True
-        else:
-            self.subtraction_numbers_label.setStyleSheet('color: gray;')
-            self.operators['-'] = False
-        
-        if multiplication_state:
-            self.multiplication_numbers_label.setStyleSheet('color: black;')
-            self.operators['*'] = True
-        else:
-            self.multiplication_numbers_label.setStyleSheet('color: gray;')
-            self.operators['*'] = False
-        
-        self.operators_list = [k for k, v in self.operators.items() if v]
-        
-        if self.operators_list:
-            self.start_button.setEnabled(True)
-        else:
-            self.start_button.setEnabled(False)
+        self.operators_list = [k for k, v in self.operators_dict.items() if v]
+        self.start_button.setEnabled(bool(self.operators_list))
         
         if self.logging:
-            print(f'{self.operators_list = }')
+            print(f'Operators list: {self.operators_list}')
     
-    def start(self, state):
+    def start(self, state: bool):
         settings_list = [
             self.logging_checkbox,
             self.difficulty,
@@ -542,43 +517,36 @@ class MainWindow(QMainWindow):
                 settings_list.append(self.countdown_combobox)
         
         if state:
-            # self.user_input.setFocus()
-            # self.start_button.setText('Stop')
-            
-            process = threading.Thread(
-                target=self.start_countdown,
-                # args=[], # Для передачи аргументов в функцию
-            )
+            process = threading.Thread(target = self.start_countdown)
             process.start()
             
             for setting in settings_list:
                 setting.setEnabled(False)
             
             if self.logging:
-                print(f'Test: Started')
+                print('Test: Started')
         else:
-            # self.user_input.clearFocus()
+            self.example_label.setText('Example')
             self.start_button.setText('Start')
+            self.user_input.setEnabled(False)
+            self.user_input.clear()
             
             for setting in settings_list:
                 setting.setEnabled(True)
             
             if self.logging:
-                print(f'Test: Stopped')
+                print('Test: Stopped')
     
     def start_countdown(self):
-        # for i in sorted(range(1, 4), reverse=True):
-        #     if self.start_button.isChecked():
-        #         self.start_button.setText(f'Stop ({i}{'.'*i})')
-        #         time.sleep(0.5)
-        #         QApplication.processEvents()
-        #     else:
-        #         break
+        for i in sorted(range(1, 4), reverse=True):
+            if self.start_button.isChecked():
+                self.start_button.setText(f'Stop ({i}{'.'*i})')
+                time.sleep(0.5)
+                QApplication.processEvents()
+            else:
+                return
         
         if self.start_button.isChecked():
-            self.user_input.setFocus()
-            self.start_button.setText('Stop')
-            
             self.right_answers = 0
             self.wrong_answers = 0
             self.score = 0
@@ -587,78 +555,82 @@ class MainWindow(QMainWindow):
                 f'Result:  {self.right_answers} - {self.wrong_answers} = '
             )
             self.score_label.setText(f'{self.score}')
+            self.score_label.setStyleSheet('color: black;')
+            self.user_input.setEnabled(True)
+            self.user_input.setFocus()
+            self.start_button.setText('Stop')
+            self.recent_examples.clear()
             
-            self.generate_examples()
+            self.generate_example()
     
-    def generate_examples(self):
-        number_1: int
-        number_2: int
+    def generate_example(self):
+        number_1: int = 0
+        number_2: int = 0
         operator: str = random.choice(self.operators_list)
-        gen_nums_range: list
+        gen_nums_range: list = self.current_gen_nums_dict[operator]
         
-        if operator == '+':
-            gen_nums_range = self.current_gen_nums_dict['+']
+        while number_1 == 0:
             number_1 = random.randint(*gen_nums_range)
+        while number_2 == 0:
             number_2 = random.randint(*gen_nums_range)
-            self.result = number_1 + number_2
-            
-            if number_2 < 0:
-                self.example_label.setText(f'{number_1} + ({number_2})')
-            else:
-                self.example_label.setText(f'{number_1} + {number_2}')
         
-        elif operator == '-':
-            gen_nums_range = self.current_gen_nums_dict['-']
-            number_1 = random.randint(*gen_nums_range)
-            number_2 = random.randint(*gen_nums_range)
-            self.result = number_1 - number_2
-            
-            if number_2 < 0:
-                self.example_label.setText(f'{number_1} - ({number_2})')
-            else:
-                self.example_label.setText(f'{number_1} - {number_2}')
+        match operator:
+            case '+':
+                self.result = number_1 + number_2
+            case '-':
+                self.result = number_1 - number_2
+            case '*':
+                self.result = number_1 * number_2
         
-        elif operator == '*':
-            gen_nums_range = self.current_gen_nums_dict['*']
-            number_1 = random.randint(*gen_nums_range)
-            number_2 = random.randint(*gen_nums_range)
-            self.result = number_1 * number_2
-            
-            if number_2 < 0:
-                self.example_label.setText(f'{number_1} * ({number_2})')
-            else:
-                self.example_label.setText(f'{number_1} * {number_2}')
+        if number_2 < 0:
+            self.example_label.setText(f'{number_1} {operator} ({number_2})')
+        else:
+            self.example_label.setText(f'{number_1} {operator} {number_2}')
     
     def check_example(self):
-        try:
-            user_input = int(self.user_input.text())
-        except ValueError as e:
-            user_input = 0
-        
+        user_input = 0
+        user_input_text = self.user_input.text()
+        user_input_is_correct = False
         recent_example_text = ''
+        
+        if user_input_text:
+            try:
+                user_input = int(user_input_text)
+                user_input_is_correct = True
+            except ValueError:
+                user_input_is_correct = False
         
         if user_input == self.result:
             self.right_answers += 1
-            recent_example_text = (
-                f'[+] {self.example_label.text()} = {user_input}'
+            recent_example_text += (
+                f'[+] {self.example_label.text()}'
+                f' = {user_input if user_input_is_correct else '-'}'
             )
         else:
             self.wrong_answers += 1
-            recent_example_text = (
-                f'[-] {self.example_label.text()} = '
-                f'{user_input} ({self.result})'
+            recent_example_text += (
+                f'[-] {self.example_label.text()}'
+                f' = {user_input if user_input_is_correct else '-'}'
+                f' ({self.result})'
             )
         
         self.score = self.right_answers - self.wrong_answers
+        self.score_label.setText(f'{self.score}')
+        
+        if self.score == 0:
+            self.score_label.setStyleSheet('color: black;')
+        elif self.score > 0:
+            self.score_label.setStyleSheet('color: green;')
+        elif self.score < 0:
+            self.score_label.setStyleSheet('color: red;')
         
         self.result_label.setText(
             f'Result:  {self.right_answers} - {self.wrong_answers} = '
         )
-        self.score_label.setText(str(self.score))
         self.recent_examples.insertItem(0, recent_example_text)
         self.user_input.clear()
         
-        self.generate_examples()
+        self.generate_example()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
