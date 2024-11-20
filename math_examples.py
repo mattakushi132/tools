@@ -1,7 +1,5 @@
 import random
 import sys
-import time
-import threading
 
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QFont
@@ -28,6 +26,7 @@ class Separator(QFrame):
             self,
             orientation: str,
             line_width: int = 1,
+            color: str = 'lightgray',
         ):
         super().__init__()
         
@@ -38,7 +37,7 @@ class Separator(QFrame):
                 self.setFrameShape(QFrame.Shape.VLine)
         
         self.setLineWidth(line_width)
-        self.setStyleSheet('color: lightgray;')
+        self.setStyleSheet(f'color: {color};')
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -70,8 +69,8 @@ class MainWindow(QMainWindow):
                     '/': '...',
                 },
                 'normal': {
-                    '+': [1, 1000],
-                    '-': [1, 1000],
+                    '+': [10, 1000],
+                    '-': [10, 1000],
                     '*': [2, 25],
                     '/': '...',
                 },
@@ -172,7 +171,7 @@ class MainWindow(QMainWindow):
         countdown_layout.addWidget(self.countdown_checkbox)
         countdown_layout.addWidget(self.countdown_combobox,
                                    alignment=Qt.AlignmentFlag.AlignRight)
-
+        
         
         self.negative_numbers = QCheckBox()
         self.negative_numbers.setText('Negative numbers')
@@ -343,38 +342,38 @@ class MainWindow(QMainWindow):
         self.send_user_input.setEnabled(False)
         self.send_user_input.clicked.connect(self.check_example)
         
-        example_layout = QHBoxLayout()
-        example_layout.addWidget(self.example_label)
-        example_layout.addWidget(self.equal_label)
-        example_layout.addWidget(
+        self.example_layout = QHBoxLayout()
+        self.example_layout.addWidget(self.example_label)
+        self.example_layout.addWidget(self.equal_label)
+        self.example_layout.addWidget(
             self.user_input,
             alignment=Qt.AlignmentFlag.AlignHCenter
         )
-        example_layout.addWidget(
+        self.example_layout.addWidget(
             self.send_user_input,
             alignment=Qt.AlignmentFlag.AlignCenter
         )
-        example_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.example_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         
         self.start_test_button = QPushButton()
         self.start_test_button.setCheckable(True)
         self.start_test_button.setText('Start')
-        self.start_test_button.clicked.connect(self.start_test)
+        self.start_test_button.clicked.connect(self.change_test_state)
         
         
-        self.recent_examples_label = QLabel()
-        self.recent_examples_label.setText('Recent solved examples:')
+        self.previous_examples_label = QLabel()
+        self.previous_examples_label.setText('Recent solved examples:')
         
-        self.recent_examples = QListWidget()
-        self.recent_examples.setMaximumWidth(240)
+        self.previous_examples = QListWidget()
+        self.previous_examples.setMaximumWidth(240)
         
-        recent_examples_layout = QVBoxLayout()
-        recent_examples_layout.addWidget(
-            self.recent_examples_label,
+        previous_examples_layout = QVBoxLayout()
+        previous_examples_layout.addWidget(
+            self.previous_examples_label,
             alignment=Qt.AlignmentFlag.AlignHCenter
         )
-        recent_examples_layout.addWidget(
-            self.recent_examples,
+        previous_examples_layout.addWidget(
+            self.previous_examples,
             alignment=Qt.AlignmentFlag.AlignCenter
         )
         
@@ -385,13 +384,13 @@ class MainWindow(QMainWindow):
                               alignment=Qt.AlignmentFlag.AlignTop)
         main_layout.addLayout(self.countdown_layout)
         main_layout.addSpacing(10)
-        main_layout.addLayout(example_layout)
+        main_layout.addLayout(self.example_layout)
         main_layout.addSpacing(10)
         main_layout.addWidget(self.start_test_button,
                               alignment=Qt.AlignmentFlag.AlignHCenter)
         main_layout.addSpacing(10)
         main_layout.addWidget(Separator('h', 2))
-        main_layout.addLayout(recent_examples_layout)
+        main_layout.addLayout(previous_examples_layout)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop
                                  | Qt.AlignmentFlag.AlignHCenter)
         
@@ -438,15 +437,16 @@ class MainWindow(QMainWindow):
         if state:
             self.countdown_label.setVisible(True)
             self.countdown_layout.insertSpacing(1, -28)
-            
-            if self.logging:
-                print('Countdown: Enabled')
+            self.example_layout.setContentsMargins(0, 2, 0, 0)
         else:
             self.countdown_label.setVisible(False)
             self.countdown_layout.insertSpacing(1, 28)
-            
-            if self.logging:
-                print('Countdown: Disabled')
+            self.example_layout.setContentsMargins(0, -2, 0, 0)
+        
+        if self.logging:
+            print(f'Countdown: {'Enabled' if state else 'Disabled'}')
+        
+        print('!!! Countdown not working yet !!!')
     
     def countdown_time_changed(self, index: int):
         if self.logging:
@@ -455,16 +455,13 @@ class MainWindow(QMainWindow):
     def negative_numbers_state_changed(self, state: int):
         if state:
             self.num_state = 'negative'
-            
-            if self.logging:
-                print('Negative numbers: ON')
         else:
             self.num_state = 'positive'
-            
-            if self.logging:
-                print('Negative numbers: OFF')
         
         self.update_current_gen_nums_dict()
+        
+        if self.logging:
+            print(f'Negative numbers: {'ON' if state else 'OFF'}')
     
     def operators_checkbox_changed(self):
         operators_matrix = [
@@ -493,7 +490,43 @@ class MainWindow(QMainWindow):
         if self.logging:
             print(f'Operators list: {self.operators_list}')
     
-    def start_test(self, state: bool):
+    def clear_the_result(self):
+        self.right_answers = 0
+        self.wrong_answers = 0
+        self.score = self.right_answers - self.wrong_answers
+        
+        self.result_label.setText(
+            f'Result:  {self.right_answers} - {self.wrong_answers} = '
+        )
+        self.score_label.setText(f'{self.score}')
+        self.previous_examples.clear()
+    
+    def update_score_label(self):
+        if self.score == 0:
+            self.score_label.setStyleSheet('color: black;')
+        elif self.score > 0:
+            self.score_label.setStyleSheet('color: green;')
+        elif self.score < 0:
+            self.score_label.setStyleSheet('color: red;')
+    
+    def test_started(self):
+        self.clear_the_result()
+        self.update_score_label()
+        
+        self.user_input.setEnabled(True)
+        self.user_input.setFocus()
+        self.send_user_input.setEnabled(True)
+        self.start_test_button.setText('Stop')
+        self.generate_example()
+    
+    def test_stopped(self):
+        self.user_input.setEnabled(False)
+        self.user_input.clear()
+        self.send_user_input.setEnabled(False)
+        self.start_test_button.setText('Start')
+        self.example_label.setText('Example')
+    
+    def change_test_state(self, state: bool):
         settings_list = [
             self.logging_checkbox,
             self.difficulty,
@@ -506,53 +539,18 @@ class MainWindow(QMainWindow):
         ]
         
         if state:
-            process = threading.Thread(target = self.start_test_countdown)
-            process.start()
-            
             for setting in settings_list:
                 setting.setEnabled(False)
             
-            if self.logging:
-                print('Test: Started')
+            self.test_started()
         else:
-            self.example_label.setText('Example')
-            self.start_test_button.setText('Start')
-            self.user_input.setEnabled(False)
-            self.user_input.clear()
-            self.send_user_input.setEnabled(False)
-            
             for setting in settings_list:
                 setting.setEnabled(True)
             
-            if self.logging:
-                print('Test: Stopped')
-    
-    def start_test_countdown(self):
-        for i in sorted(range(1, 4), reverse=True):
-            if self.start_test_button.isChecked():
-                self.start_test_button.setText(f'Stop ({i}{'.'*i})')
-                time.sleep(0.5)
-                QApplication.processEvents()
-            else:
-                return
+            self.test_stopped()
         
-        if self.start_test_button.isChecked():
-            self.right_answers = 0
-            self.wrong_answers = 0
-            self.score = 0
-            
-            self.result_label.setText(
-                f'Result:  {self.right_answers} - {self.wrong_answers} = '
-            )
-            self.score_label.setText(f'{self.score}')
-            self.score_label.setStyleSheet('color: black;')
-            self.user_input.setEnabled(True)
-            self.user_input.setFocus()
-            self.send_user_input.setEnabled(True)
-            self.start_test_button.setText('Stop')
-            self.recent_examples.clear()
-            
-            self.generate_example()
+        if self.logging:
+            print(f'Test: {'Started' if state else 'Stopped'}')
     
     def generate_example(self):
         number_1: int = 0
@@ -584,7 +582,7 @@ class MainWindow(QMainWindow):
             self.example_label.setText(f'{number_1} {operator} {number_2}')
     
     def check_example(self):
-        user_input = 0
+        user_input: int = None
         user_input_text = self.user_input.text()
         user_input_is_correct = False
         
@@ -597,13 +595,13 @@ class MainWindow(QMainWindow):
         
         if user_input == self.result:
             self.right_answers += 1
-            recent_example_text = (
+            example_text = (
                 f'[+] {self.example_label.text()}'
                 f' = {user_input if user_input_is_correct else '-'}'
             )
         else:
             self.wrong_answers += 1
-            recent_example_text = (
+            example_text = (
                 f'[-] {self.example_label.text()}'
                 f' = {user_input if user_input_is_correct else '-'}'
                 f' ({self.result})'
@@ -612,17 +610,12 @@ class MainWindow(QMainWindow):
         self.score = self.right_answers - self.wrong_answers
         self.score_label.setText(f'{self.score}')
         
-        if self.score == 0:
-            self.score_label.setStyleSheet('color: black;')
-        elif self.score > 0:
-            self.score_label.setStyleSheet('color: green;')
-        elif self.score < 0:
-            self.score_label.setStyleSheet('color: red;')
+        self.update_score_label()
         
         self.result_label.setText(
             f'Result:  {self.right_answers} - {self.wrong_answers} = '
         )
-        self.recent_examples.insertItem(0, recent_example_text)
+        self.previous_examples.insertItem(0, example_text)
         self.user_input.setFocus()
         self.user_input.clear()
         
