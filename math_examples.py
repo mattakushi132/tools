@@ -58,6 +58,7 @@ class MainWindow(QMainWindow):
         
         self.right_answers = 0
         self.wrong_answers = 0
+        self.counter = self.right_answers + self.wrong_answers
         self.score = self.right_answers - self.wrong_answers
         self.result = 0
         
@@ -547,6 +548,9 @@ class MainWindow(QMainWindow):
         
         self.score_label.setStyleSheet(f'color: {label_color};')
     
+    def update_counter(self):
+        self.counter = self.right_answers + self.wrong_answers + 1
+    
     def test_started(self):
         self.clear_the_result()
         self.update_score_label()
@@ -604,12 +608,14 @@ class MainWindow(QMainWindow):
                 self.operator_index = self.operators_list.index(operator)
             case 'in_order':
                 if self.operator_index is not None:
+                    self.operator_index += 1
+                    
                     try:
-                        self.operator_index += 1
                         operator = self.operators_list[self.operator_index]
                     except IndexError:
                         self.operator_index = 0
                         operator = self.operators_list[self.operator_index]
+                
                 elif self.operator_index is None:
                     self.operator_index = 0
                     operator = self.operators_list[self.operator_index]
@@ -651,14 +657,18 @@ class MainWindow(QMainWindow):
             except ValueError:
                 user_input_is_correct = False
         
+        self.update_counter()
+        
         if user_input == self.result:
             self.right_answers += 1
             example_text = (
+                f'{self.counter}. '
                 f'[+] {self.example_label.text()} = {user_input}'
             )
         else:
             self.wrong_answers += 1
             example_text = (
+                f'{self.counter}. '
                 f'[-] {self.example_label.text()}'
                 f' = {user_input if user_input_is_correct else '-'}'
                 f' ({self.result})'
