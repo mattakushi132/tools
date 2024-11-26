@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QProgressBar,
     QPushButton,
+    QRadioButton,
     QWidget,
 )
 
@@ -270,6 +271,30 @@ class MainWindow(QMainWindow):
         operators_layout.addLayout(division_layout)
         
         
+        self.operator_order = 'random'
+        self.operator_index: int = None
+        
+        operator_order_label = QLabel()
+        operator_order_label.setText('The order of using operators')
+        
+        self.operator_random = QRadioButton()
+        self.operator_random.setText('Random')
+        self.operator_random.setChecked(True)
+        self.operator_random.clicked.connect(self.operators_using_changed)
+        
+        self.operator_in_order = QRadioButton()
+        self.operator_in_order.setText('In order')
+        self.operator_in_order.clicked.connect(self.operators_using_changed)
+        
+        operator_radio_buttons = QHBoxLayout()
+        operator_radio_buttons.addWidget(self.operator_random)
+        operator_radio_buttons.addWidget(self.operator_in_order)
+        
+        operators_using_layout = QVBoxLayout()
+        operators_using_layout.addWidget(operator_order_label)
+        operators_using_layout.addLayout(operator_radio_buttons)
+        
+        
         settings_layout = QVBoxLayout()
         settings_layout.addLayout(logging_settings_layout)
         settings_layout.addWidget(Separator('h', 2))
@@ -280,6 +305,8 @@ class MainWindow(QMainWindow):
         settings_layout.addWidget(self.negative_numbers)
         settings_layout.addWidget(Separator('h'))
         settings_layout.addLayout(operators_layout)
+        settings_layout.addWidget(Separator('h'))
+        settings_layout.addLayout(operators_using_layout)
         settings_layout.setAlignment(top_left_align)
         
         
@@ -490,6 +517,15 @@ class MainWindow(QMainWindow):
         if self.logging:
             print(f'Operators list: {self.operators_list}')
     
+    def operators_using_changed(self):
+        if self.operator_random.isChecked():
+            self.operator_order = 'random'
+        elif self.operator_in_order.isChecked():
+            self.operator_order = 'in_order'
+        
+        if self.logging:
+            print(f'Using operators: {self.operator_order}')
+    
     def clear_the_result(self):
         self.right_answers = 0
         self.wrong_answers = 0
@@ -503,11 +539,13 @@ class MainWindow(QMainWindow):
     
     def update_score_label(self):
         if self.score == 0:
-            self.score_label.setStyleSheet('color: black;')
+            label_color = 'black'
         elif self.score > 0:
-            self.score_label.setStyleSheet('color: green;')
+            label_color = 'green'
         elif self.score < 0:
-            self.score_label.setStyleSheet('color: red;')
+            label_color = 'red'
+        
+        self.score_label.setStyleSheet(f'color: {label_color};')
     
     def test_started(self):
         self.clear_the_result()
@@ -520,6 +558,7 @@ class MainWindow(QMainWindow):
         self.generate_example()
     
     def test_stopped(self):
+        self.operator_index = None
         self.user_input.setEnabled(False)
         self.user_input.clear()
         self.send_user_input.setEnabled(False)
@@ -534,6 +573,8 @@ class MainWindow(QMainWindow):
             self.addition,
             self.subtraction,
             self.multiplication,
+            self.operator_random,
+            self.operator_in_order,
             self.countdown_checkbox,
             self.countdown_combobox,
         ]
@@ -555,7 +596,24 @@ class MainWindow(QMainWindow):
     def generate_example(self):
         number_1: int = 0
         number_2: int = 0
-        operator: str = random.choice(self.operators_list)
+        operator: str
+        
+        match self.operator_order:
+            case 'random':
+                operator = random.choice(self.operators_list)
+                self.operator_index = self.operators_list.index(operator)
+            case 'in_order':
+                if self.operator_index is not None:
+                    try:
+                        self.operator_index += 1
+                        operator = self.operators_list[self.operator_index]
+                    except IndexError:
+                        self.operator_index = 0
+                        operator = self.operators_list[self.operator_index]
+                elif self.operator_index is None:
+                    self.operator_index = 0
+                    operator = self.operators_list[self.operator_index]
+        
         gen_nums_range: list = self.current_gen_nums_dict[operator]
         
         while number_1 == 0:
@@ -596,8 +654,7 @@ class MainWindow(QMainWindow):
         if user_input == self.result:
             self.right_answers += 1
             example_text = (
-                f'[+] {self.example_label.text()}'
-                f' = {user_input if user_input_is_correct else '-'}'
+                f'[+] {self.example_label.text()} = {user_input}'
             )
         else:
             self.wrong_answers += 1
