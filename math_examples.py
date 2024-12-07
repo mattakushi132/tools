@@ -157,6 +157,7 @@ class MainWindow(QMainWindow):
         self.countdown_checkbox.stateChanged.connect(
             self.countdown_state_changed
         )
+        self.countdown_checkbox.setEnabled(False)
         
         self.countdown_time_list = [10, 20, 30]
         
@@ -168,6 +169,7 @@ class MainWindow(QMainWindow):
         self.countdown_combobox.currentIndexChanged.connect(
             self.countdown_time_changed
         )
+        self.countdown_combobox.setEnabled(False)
         
         countdown_layout = QHBoxLayout()
         countdown_layout.addWidget(self.countdown_checkbox)
@@ -272,24 +274,24 @@ class MainWindow(QMainWindow):
         operators_layout.addLayout(division_layout)
         
         
-        self.operator_order = 'random'
+        self.operator_order = 'in_order'
         self.operator_index: int = None
         
         operator_order_label = QLabel()
         operator_order_label.setText('The order of using operators')
         
-        self.operator_random = QRadioButton()
-        self.operator_random.setText('Random')
-        self.operator_random.setChecked(True)
-        self.operator_random.clicked.connect(self.operators_using_changed)
-        
         self.operator_in_order = QRadioButton()
         self.operator_in_order.setText('In order')
+        self.operator_in_order.setChecked(True)
         self.operator_in_order.clicked.connect(self.operators_using_changed)
         
+        self.operator_random = QRadioButton()
+        self.operator_random.setText('Random')
+        self.operator_random.clicked.connect(self.operators_using_changed)
+        
         operator_radio_buttons = QHBoxLayout()
-        operator_radio_buttons.addWidget(self.operator_random)
         operator_radio_buttons.addWidget(self.operator_in_order)
+        operator_radio_buttons.addWidget(self.operator_random)
         
         operators_using_layout = QVBoxLayout()
         operators_using_layout.addWidget(operator_order_label)
@@ -314,6 +316,7 @@ class MainWindow(QMainWindow):
         self.timer_label = QLabel()
         self.timer_label.setText('00:00')
         self.timer_label.setFont(self.font_primary)
+        self.timer_label.setStyleSheet('color: gray;')
         
         self.result_label = QLabel()
         self.result_label.setText(
@@ -513,16 +516,24 @@ class MainWindow(QMainWindow):
                 self.operators_dict[operator] = False
         
         self.operators_list = [k for k, v in self.operators_dict.items() if v]
+        
+        if len(self.operators_list) > 1:
+            self.operator_in_order.setEnabled(True)
+            self.operator_random.setEnabled(True)
+        else:
+            self.operator_in_order.setEnabled(False)
+            self.operator_random.setEnabled(False)
+        
         self.start_test_button.setEnabled(bool(self.operators_list))
         
         if self.logging:
             print(f'Operators list: {self.operators_list}')
     
     def operators_using_changed(self):
-        if self.operator_random.isChecked():
-            self.operator_order = 'random'
-        elif self.operator_in_order.isChecked():
+        if self.operator_in_order.isChecked():
             self.operator_order = 'in_order'
+        elif self.operator_random.isChecked():
+            self.operator_order = 'random'
         
         if self.logging:
             print(f'Using operators: {self.operator_order}')
@@ -538,7 +549,7 @@ class MainWindow(QMainWindow):
         self.score_label.setText(f'{self.score}')
         self.previous_examples.clear()
     
-    def update_score_label(self):
+    def update_score_label_color(self):
         if self.score == 0:
             label_color = 'black'
         elif self.score > 0:
@@ -553,7 +564,7 @@ class MainWindow(QMainWindow):
     
     def test_started(self):
         self.clear_the_result()
-        self.update_score_label()
+        self.update_score_label_color()
         
         self.user_input.setEnabled(True)
         self.user_input.setFocus()
@@ -577,11 +588,13 @@ class MainWindow(QMainWindow):
             self.addition,
             self.subtraction,
             self.multiplication,
-            self.operator_random,
-            self.operator_in_order,
-            self.countdown_checkbox,
-            self.countdown_combobox,
+            # self.countdown_checkbox,
+            # self.countdown_combobox,
         ]
+        
+        if len(self.operators_list) > 1:
+            settings_list.append(self.operator_in_order)
+            settings_list.append(self.operator_random)
         
         if state:
             for setting in settings_list:
@@ -677,7 +690,7 @@ class MainWindow(QMainWindow):
         self.score = self.right_answers - self.wrong_answers
         self.score_label.setText(f'{self.score}')
         
-        self.update_score_label()
+        self.update_score_label_color()
         
         self.result_label.setText(
             f'Result:  {self.right_answers} - {self.wrong_answers} = '
