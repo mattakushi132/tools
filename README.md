@@ -1,11 +1,21 @@
 # TOOLS
 
-- [x] [1. Password generator](password_generator.py)
-    - <p>Simple password generator.</p>
-    <img src='demonstration/password_generator.png'>
+<ul>
+    <li>
+        <a href='password_generator.py'>1. Password generator</a>
+        <p>Simple password generator.</p>
+        <img src='demonstration/1.png'>
+    </li>
     <br>
-- [x] [2. Mathematical examples](math_examples.py)
-    - <p>Brain workout test.</p>
-    <img src='demonstration/math_examples.png'>
+    <li>
+        <a href='math_examples.py'>2. Mathematical examples</a>
+        <p>Brain workout test.</p>
+        <img src='demonstration/2.png'>
+    </li>
     <br>
-- [ ] ...
+    <li>
+        <a href='converter.py'>3. Converter</a>
+        <p>converter of anything (so far colors ...0-0...).</p>
+        <img src='demonstration/3.png'>
+    </li>
+</ul>
