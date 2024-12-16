@@ -15,7 +15,6 @@
   <br>
   <li>
     <a href='converter.py'>3. Converter</a>
-    <p>Converter of anything (so far colors ...0-0...).</p>
     <img src='demonstration/3_converter.png'>
   </li>
 </ul>
