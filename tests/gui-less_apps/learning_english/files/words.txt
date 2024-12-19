@@ -1,0 +1,397 @@
+
+arrogant - высокомерный, надменный
+comic - комический
+courage - храбрость, мужество
+dare - сметь, осмеливаться
+excite - возбуждать
+fear - страх
+fiction - вымысел
+fix - исправить, чинить
+honour - честь, благородство
+invitation - приглашение
+mystery - тайна
+pickpocket - карманник
+power - сила, мощь
+sunburnt - загорелый
+taste - пробовать, вкус
+university - университет
+fight - драться
+fortnight - две недели
+horse riding - катание на лошади
+mobile - мобильный телефон
+national - народный, общенародный
+paragliding - парапланеризм
+passion - страсть, страстное увлечение
+pastime - развлечение, времяпровождение
+relaxing - расслабляющий
+rock climbing - скалолазание
+screen - экран
+send - отправлять
+skateboard - скейтборд
+spend - тратить
+dedicated - преданный
+dishonest - нечестный
+express - выражать
+fair - справедливый
+feel, sense - чувствовать
+feeling - чувство
+forget - забывать
+hurt - обижать
+jealous - ревнивый
+patient - терпеливый
+rent - брать напрокат, арендовать
+respected - уважаемый
+selfish - эгоистичный, самолюбивый
+supportive - поддерживающий
+
+console - игровая приставка
+consumer - потребитель
+crazy - сумасшедший, безумный
+deliver - доставлять
+extreme sport - экстремальный спорт
+fare - плата за проезд
+favourite - любимый
+gliding - планеризм
+grades - оценки
+guess - догадываться, угадывать
+hobby - хобби, увлечение
+household chores - домашние обязанности
+involve - включать
+lazy - ленивый
+lend - давать взаймы
+massive - огромный, солидный
+odd - нерегулярный, разовый
+overtake - перегонять
+parachuting - парашютный спорт
+pay - платить
+pocket money - карманные деньги
+resist - устоять, воздерживаться от чего-то
+retailer - розничный торговец
+sales assistant - продавец-консультант
+saver - бережливый человек
+shopping spree - поход по магазинам
+spender - расточитель, транжира
+student loan - кредит на обучение
+survive - выживать
+technology - технология
+traditional - традиционный
+determined - решительный
+fishing - рыбная ловля
+football - футбол
+gardening - садоводство
+imaginative - одаренный воображением
+martial arts - боевые искусства
+outgoing - общительный, дружелюбный
+quiet - тихий
+relaxed - расслабленный
+reserved - замкнутый, сдержанный
+sensitive - чувствительный
+skydiving - затяжные прыжки с парашютом
+
+accommodate - предоставлять жилье
+affect - влиять, воздействовать
+alien - чуждый, несвойственный
+ancestor - предок
+authority - власть, авторитет
+behaviour - поведение
+birth rate - уровень рождаемости, коэффициент рождаемости
+brother-in-law - зять, шурин, деверь
+concept - идея, понятие
+control - сдерживать, управлять, контролировать
+cradle - исток, начало
+cultural traditions - культурные традиции
+divorced - разведенный
+dull - скучный, унылый
+elder - старший, старшие
+elderly - пожилой, преклонного возраста
+ex-husband - бывший муж
+extended, huge - большой, огромный
+foster - воспитывать
+generation - поколение
+grandson - внук
+great-grandfather - прадед
+half sister - сводная сестра
+hierarchy - иерархия
+honour - честь
+immediate - ближайший
+
+draw a parallel - сравнивать, провести параллель
+helpless - беспомощный
+hurl - бросать силой, метнуть
+ignore - игнорировать
+incident - происшествие, инцидент
+infliction - нанесение ущерба
+instinctively - инстинктивно
+lay - положить на место
+obedient - послушный, покорный
+orphaned - осиротевший
+passion - страсть
+predominate - преобладать, превалировать
+publish - публиковать
+rummage - рыться, искать, копаться
+sensation - ощущение, чувство
+sharp - острый
+shortly - скоро, вскоре
+shrink - усыхать, уменьшиться
+sneaking - крадущийся
+strike - бить, наносить удар
+take over - перенимать
+terror - ужас, страх, террор
+threat - угроза
+thrust - толкать
+totter - ковылять, идти неровной походкой
+trickle - струиться, течь тонкой струйкой
+wicked - злой
+
+chatter - стучать зубами
+chin - подбородок
+coarse - грубый
+comment - комментировать
+confront - столкнуться, стоять против
+continent - континент
+convict - осужденный
+crown - корона
+debtor - должник
+declaration - провозглашение
+depict - изображать
+earnestly - искренне
+encounter - встреча
+fearful - страшный, пугающий
+file - напильник
+freedom - свобода
+gateway - ворота, вход
+glare - смотреть свирепо
+harbour - гавань
+hardship - невзгоды, сложности
+homeland - родина, место рождения
+huddle - толпиться
+immigration - иммиграция
+impact - влияние, воздействие, эффект
+inscription - надпись, посвящение
+lame - хромать
+legal - законный
+liberty - свобода
+lick - облизывать, лизать
+lie - лежать, располагаться
+life-size - в натуральную величину
+limp - ковылять, хромать, двигаться с трудом
+liver - печень
+loose fitting - свободно сидящий
+monument - памятник
+mud - грязь
+mutter - бормотать
+nettle - крапива
+opportunity - возможность
+oppression - угнетение
+plead - просить, умолять, призывать
+porch - крыльцо
+profound - основательный
+rag - лоскут
+ravenous - прожорливый
+ray - луч
+replica - репродукция, копия
+robe - мантия
+seize - хватать
+shiver - дрожать от холода
+soak - промокать
+steeple - колокольня, шпиль собора
+sting - жалить
+symbolic - символичный
+symbolise - символизировать
+tablet - мемориальная доска
+tear - рвать, разрывать
+tight - тугой, плотный
+tilt - наклонять, опрокидывать
+timidly - робко, запутанно
+tombstone - надгробие
+tremble - трястись, дрожать
+
+arson - поджог
+bandage - повязка, бандаж
+cast - гипс
+cinema complex - кинокомплекс
+confused - смущенный
+debris - развалины
+drown - утонуть, тонуть
+eager - жаждущий, нетерпеливый, стремящийся к чему-либо
+emerge - появляться, показываться, возникать
+expedition - экспедиция
+extent - объем, протяжение, размер, пространство
+fetch - достать, принести чего-либо
+frequent - частый
+genius - гениальный
+glimpse - мимолетный взгляд
+grope - идти наощупь
+guide - показать путь, проводить, вести
+hail - окликать
+identity - личность
+insist - настаивать
+inspiration - вдохновение
+lawn - луг, лужайка
+link - соединяться, соединять
+mayor - мэр
+monster - монстр, чудовище
+nest - гнездо
+observe - наблюдать, замечать
+operation - операция
+predict - предугадывать, предвидеть
+rise - повышать, увеличивать
+shoot - стрелять
+smash - разбивать вдребезги
+suspicious - подозрительный
+swallow - глотать
+tow truck - буксир
+tsunami - цунами
+
+burden - обязательство
+characterisation - характеристика, описание
+circumstance - обстоятельство
+cluttered - захламленный, заставленный
+crash helmet - защитный шлем
+crimson - малиновый, темно-красный
+descendant - потомок
+desire - желание
+dignified - величественный, возвышенный, обладающий чувством собственного достоинства
+distant - удаленный
+district - район
+elegant - элегантный
+emerald - изумрудный, ярко-зеленый
+estate - поместье, имение, владение
+everything but the kitchen sink - все подряд
+fancy - дорогой
+fate - судьба
+fit - оснащать, экипировать
+gifted - одаренный
+greenhouse - теплица, парник
+grumbling - ворчливый
+have a roof over our head - иметь крышу над головой
+innocence - невиновность
+landscape - ландшафт
+obligation - обязанность
+overcrowded - переполненный
+pavement - тротуар
+prohibition - запрет
+prosperity - достаток
+public transport - общественный транспорт
+relief - облегчение
+renovate - обновлять, улучшать
+roadworks - дорожные работы
+sin - грех
+stink - вонять, плохо пахнуть
+traffic - пробка
+сottage - коттедж, загородный дом
+
+abduct - похищать
+advanced - развитый, продинутый
+analyse - анализировать
+antenna - антенна
+broadcast - вещание, трансляция
+comb - прочесывать, тщательно проверять
+comet - комета
+confine - ограничивать
+convincing - убедительный
+discouraging - обескураживающий
+download - загружать информацию из интернета, скачать
+extraterrestrial - внеземной
+face the fact - смотреть в лицо фактам
+galaxy - галактика
+grain - крупинка
+hunt - охота
+hypothesis - гипотеза
+intelligence - интеллект, разум
+intentionally - намеренно, специально, умышленно
+laser - лазер
+military - военный
+moon - луна
+orbit - орбита
+planet - планета
+pretty - хорошенький, симпатичный
+radio wave - радио волна
+sand - песок
+satellite - спутник
+screensaver - экранная заставка
+shred - клочок
+solar system - солнечная система
+sweep the skies - изучать небо через телескоп
+telescope - телескоп
+
+drop out - бросать обучение
+extensively - подробно, тщательно
+fool - глупец, дурак
+force - заставлять
+go into - тщательно рассматривать, вникать, вступать
+greed - жадность
+hand in - сдавать
+heap - куча, завал, ворох
+impostor - обманщик, самозванец, мошенник
+inspiring - вдохновительный, вдохновляющий
+knighthood - рыцарство, достоинство, рыцарское поведение
+master - хозяин
+miserable - несчастный, печальный, жалкий
+motivated - заинтересованный, целенаправленный
+motivational - мотивационный, заинтересованный
+neglect - забывать, запускать, забрасывать
+position - положение, должность
+price - цена
+prospectus - проспект
+qualification - квалификация
+quality - характерная черта
+scholarship - стипендия
+secluded - уединенный, изолированный, удаленный
+section - секция, часть
+seminar - семинар
+stoop - сутулиться, наклоняться
+subject - предмет обучения
+syllabus - расписание занятий, программа курса лекций
+tool - инструмент
+tough - сложный
+trap - ловушка
+triumph - триумф
+turn - очередь
+unforgiving - непростительный
+verse - стих, строфа
+virtue - достоинство
+
+edge - лезвие
+familiar - знакомый
+feat - подвиг, мастерство, достижение
+figure - фигура
+foot - подножие
+force - сила
+forecast - прогнозировать, предсказывать
+grassland - пастбище, выгон, луг
+gymnasium - тренажерный зал
+high priestess - верховная жрица
+honour - почитать, чтить
+inhabit - населять
+invader - захватчик
+invisible - невидимый
+known - известный
+legend - легенда
+lost - утраченный, пропавший, утерянный
+magnificent - великолепный, величественный
+mountain range - горный хребет
+mysterious - загадочный
+mystery - загадка, тайна
+mystic - мистик
+offering - подношение
+otherwise - иначе
+plain - равнина
+pond - пруд
+praise - хвалить, восхвалять
+predict - предсказывать
+preserved - сохраненный
+properly - свойство
+remains - останки, развалины, руины
+remote - дальний, далекий
+residence - резиденция
+ruin - руины
+sculpture - скульптура
+spiritual - духовный
+stadium - стадион
+statue - статуя
+stream - ручей, поток, течение
+strive - прилагать усилия, стараться
+swamp - болото
+symbol - символ, знак
+temple - храм
